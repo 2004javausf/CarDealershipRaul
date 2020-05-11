@@ -10,15 +10,15 @@ import com.dealership.app.EmployeeApp;
 public class MainMenu {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	public void mainMenu() {
+	public void mainMenu() throws Exception {
 		String option = "";
 		do {
 		System.out.println("Welcome to the Dealership");
 		System.out.println("Please Make a selection");
-		System.out.println("A Employee Login");
-		System.out.println("B Admin Login");
-		System.out.println("C Customer Login");
-		System.out.println("D Register for a Customer account");
+		System.out.println("A. Employee Menu");
+		System.out.println("B. Admin Menu");
+		System.out.println("C. Customer Menu");
+		System.out.println("D. Exit");
 		option =br.readLine();
 		System.out.println("\n");
 		switch(option.toUpperCase()) {
@@ -38,5 +38,6 @@ public class MainMenu {
 			
 		}
 
-	}
+	}while(option != "D");
+}
 }

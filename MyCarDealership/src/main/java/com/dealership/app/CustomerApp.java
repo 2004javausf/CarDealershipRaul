@@ -21,9 +21,11 @@ public class CustomerApp {
 		String option = "";
 		do {
 			System.out.println("A. View Cars");
-			System.out.println("B. Add customer owned car");
-			System.out.println("C. Make Offer");
-			System.out.println("D. View remaining payments");
+			//System.out.println("B. Add customer owned car");
+			System.out.println("B. Register for an Account");
+			//System.out.println("C. Make Offer");
+			//System.out.println("D. View remaining payments");
+			System.out.println("C.Login to account");
 			System.out.println("E. Exit");
 			System.out.println("==========================================================================");
 			System.out.println("Enter an option");
@@ -35,10 +37,12 @@ public class CustomerApp {
 				EmployeeApp.viewCar();
 				break;
 			case "B":
+				//this will enable  customer to register and add his own car
 				addCustomerCar();
 				break;
 			case "C":
-				makeOffer();
+				logintoAccount();
+				//makeOffer(); //move this to subsequent menun login
 				break;
 			case "D":
 			viewPayments();
@@ -53,7 +57,59 @@ public class CustomerApp {
 		} while (option != "D");
 	}
 
+	private static void logintoAccount() throws Exception {
+		System.out.println("Account Login");
+		System.out.println("Enter your username");
+		String username  = br.readLine();
+		System.out.println("Please ente your password");
+		String password = br.readLine();
+		if(username.equals(username)&& password.equals(password)) {
+			
+			String option = "";
+			System.out.println("You are logged in now you can do more stuff :-)");
+			System.out.println("A. View all Cars in the Dealership");
+			System.out.println("B. Make Offer");
+			System.out.println("C. View Payments on my own Car");
+			System.out.println("D. Exit");
+			option = br.readLine();
+			System.out.println("\n");
+			do {
+			switch (option.toUpperCase()) {
+			case "A":
+				EmployeeApp.viewCar();
+				break;
+			case "B":
+				makeOffer();
+				break;
+			case "C":
+			viewPayments();
+			case "D":
+				System.out.println("*********************THANK YOU**************************");
+				System.exit(0);
+				break;
+			default:
+				System.out.println("Invalid Option!!.Please enter again");
+				break;
+			}
+		} while (option != "D");
+		}
+}
+	
+		
+
 	private static void addCustomerCar() throws Exception{
+		System.out.println("------------------------------------");
+		System.out.println("Enter First Name:");
+		System.out.println("------------------------------------");
+		System.out.println("------------------------------------");
+		System.out.println("Enter Last Name:");
+		System.out.println("------------------------------------");
+		System.out.println("------------------------------------");
+		System.out.println("Enter Username:");
+		System.out.println("------------------------------------");
+		System.out.println("------------------------------------");
+		System.out.println("Enter Password:");
+		System.out.println("------------------------------------");
 		System.out.println("------------------------------------");
 		System.out.println("Enter Brand Name:");
 		System.out.println("------------------------------------");
@@ -94,8 +150,6 @@ public class CustomerApp {
 		
 	}
 
-
-	
 	public static void viewPayments() {
 		System.out.println("------------------------------------");
 		List<CustomerCar> customerCarList = dao3.getAllCars();
