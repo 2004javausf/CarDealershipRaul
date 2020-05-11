@@ -25,7 +25,7 @@ public class CustomerCarDAO {
 			ResultSet rs = st.executeQuery("SELECT * FROM customercars");
 			while (rs.next()) {
 				CustomerCar cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"),
-						rs.getInt("price"),rs.getInt("id"));
+						rs.getInt("price"),rs.getInt("id"),rs.getInt("remPayments"),rs.getInt("monPayment"));
 				customerCarList.add(cCar);
 			}
 			//close connection 
@@ -45,7 +45,8 @@ public class CustomerCarDAO {
 			ps.setString(1, brand); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"), rs.getInt("price"),rs.getInt("id"));
+				cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"),
+						rs.getInt("price"),rs.getInt("id"),rs.getInt("remPayments"),rs.getInt("monPayment"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,10 +58,13 @@ public class CustomerCarDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO customercar VALUES(?,?,?)");
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO customercar VALUES(?,?,?,?,?,?)");
 			ps.setString(1, cCar.getBrand()) ;
 			ps.setString(2, cCar.getModel());
 			ps.setInt(3, cCar.getPrice());
+			ps.setInt(4, cCar.getId());
+			ps.setInt(5, cCar.getRemPayments());
+			ps.setInt(6, cCar.getMonPayment());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,10 +76,13 @@ public class CustomerCarDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE customercar SET brand=?,model=?,price=? WHERE id=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE customercar SET brand=?,model=?,price=?,remPayments=?,monPayments=? WHERE id=?");
 			ps.setString(1, cCar.getBrand());
 			ps.setString(2, cCar.getModel());
 			ps.setInt(3, cCar.getPrice());
+			ps.setInt(4, cCar.getRemPayments());
+			ps.setInt(5, cCar.getMonPayment());
+
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +113,8 @@ public class CustomerCarDAO {
 			ps.setString(1, carId); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"), rs.getInt("price"),rs.getInt("id"));
+				cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"),
+						rs.getInt("price"),rs.getInt("id"),rs.getInt("remPayments"),rs.getInt("monPayment"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -3,6 +3,7 @@ package com.dealreship.driver;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import com.dealership.app.AdminAPP;
 import com.dealership.app.CustomerApp;
 import com.dealership.app.EmployeeApp;
 
@@ -25,13 +26,13 @@ public class MainMenu {
 			EmployeeApp.employeeMenu();
 			break;
 		case "B":
-			AdminApp.adminMenu();
+			AdminAPP.adminMenu();
 			break;
 		case "C":
 			CustomerApp.customerMenu();
 			break;
 		case "D":
-			System.out.prinln("Thank you for visiting the Dealership! Good Bye");
+			System.out.println("Thank you for visiting the Dealership! Good Bye");
 			System.exit(0);
 				
 			

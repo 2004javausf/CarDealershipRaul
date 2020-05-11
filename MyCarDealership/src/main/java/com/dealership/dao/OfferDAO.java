@@ -24,7 +24,7 @@ public class OfferDAO {
 			
 			ResultSet rs = st.executeQuery("SELECT * FROM offer");
 			while (rs.next()) {
-				Offer offer = new Offer(rs.getString("price"), rs.getString("payment"),
+				Offer offer = new Offer(rs.getString("price"), rs.getString("payment"),rs.getString("acceptedDenied"),
 						rs.getInt("carId"));
 				offerList.add(offer);
 			}
@@ -45,7 +45,7 @@ public class OfferDAO {
 			ps.setString(1, price); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				offer = new Offer(rs.getString("price"), rs.getString("payment"), rs.getInt("carId"));
+				offer = new Offer(rs.getString("price"), rs.getString("payment"), rs.getString("acceptedDenied"),rs.getInt("carId"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,10 +57,11 @@ public class OfferDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO product VALUES(?,?,?)");
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO offer VALUES(?,?,?,?)");
 			ps.setString(1, offer.getPrice()) ;
 			ps.setString(2, offer.getPayement());
 			ps.setInt(3, offer.getCarId());
+			ps.setString(4, offer.getAcceptedDenied());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,12 +73,25 @@ public class OfferDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE offer SET price=?,payement=? WHERE carId=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE offer SET price=?,payement=?,acceptedDenied=? WHERE carId=?");
 			ps.setString(1, offer.getPrice());
 			ps.setString(2, offer.getPayement());
 			ps.setInt(3, offer.getCarId());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
+	//only for system admin ussage
+	public int updateAllOffers(Offer offer) {
+		int status = 0;
+		try {
+			Connection conn = DBUtil.getConnection();
+			PreparedStatement ps = conn.prepareStatement("Update offer SET acceptedDenied=? where acceptedDenied=denied");
+			ps.setString(1, offer.getAcceptedDenied());
+			status = ps.executeUpdate();
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return status;
@@ -106,7 +120,7 @@ public class OfferDAO {
 			ps.setString(1, carId); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				offer = new Offer(rs.getString("price"), rs.getString("payment"),rs.getInt("carId"));
+				offer = new Offer(rs.getString("price"), rs.getString("payment"),rs.getString("acceptedDenied"),rs.getInt("carId"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

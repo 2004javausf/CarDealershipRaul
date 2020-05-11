@@ -74,8 +74,8 @@ public class EmployeeApp {
 }
 
 	private static void viewPayments() {
-	// TODO Auto-generated method stub
-	
+
+		CustomerApp.viewPayments();
 }
 
 	public static void viewCar() {

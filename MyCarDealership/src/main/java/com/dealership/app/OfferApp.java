@@ -16,7 +16,7 @@ public class OfferApp {
 		do {
 			System.out.println("A. Create Offer (add offer)");
 			System.out.println("B. View Offer");
-			System.out.println("C. Counter Offer (Update Offer)");
+			System.out.println("C. Accept or Deny Offer (Update Offer)");
 			System.out.println("D. Delete Offer");
 			System.out.println("E. Search Offer");
 			System.out.println("F. Accept/Deny Offers");
@@ -44,20 +44,17 @@ public class OfferApp {
 				searchOffer();
 				break;
 			case "F":
-				acceptDeny();
-				break;
-			case "G":
-				System.out.println("*********************THANK YOU**************************");
+				System.out.println("Thanks for visiting. Good Bye!");
 				System.exit(0);
 				break;
 			default:
-				System.out.println("Invalid Option!!.Please enter again");
+				System.out.println("Invalid Option!!Please try again");
 				break;
 			}
 		} while (option != "F");
 	}
 
-	private static void viewOffer() {
+	public static void viewOffer() {
 		System.out.println("----------------------");
 		List<Offer> offerList = dao.getAllOffers();
 		for (Offer offer : offerList) {
@@ -85,11 +82,14 @@ public class OfferApp {
 		System.out.println("------------------------------------");
 		String payment = br.readLine();
 		System.out.println("------------------------------------");
+		System.out.println("Enter accepted or denied:");
+		System.out.println("------------------------------------");
+		String acceptedDenied = br.readLine();
 		System.out.println("Enter Offer carId:");
 		System.out.println("------------------------------------");
 		int carId = Integer.parseInt(br.readLine());
 
-		Offer offer = new Offer(price, payment, carId);
+		Offer offer = new Offer(price, payment,acceptedDenied,carId);
 		int status = dao.updateOffer(offer);
 		if (status == 1) {
 			System.out.println("Offer updated successfully");
@@ -112,8 +112,8 @@ public static void addOffer()throws Exception{
 	System.out.println("Enter CarId:");
 	System.out.println("------------------------------------");
 	int carId = Integer.parseInt(br.readLine());
-	
-	Offer offer = new Offer(price, payment,carId);
+	String acceptedDenied = "denied";
+	Offer offer = new Offer(price, payment,acceptedDenied,carId);
 	int status = dao.addOffer(offer);
 	if (status == 1) {
 		System.out.println("Offer added successfully");
@@ -146,23 +146,22 @@ public static void addOffer()throws Exception{
 		System.out.println("\n");
 	}
 
-	private static void acceptDeny() throws Exception {
-		viewOffer();
-		System.out.println("Please select offer to accept or deny");
-		String carId = br.readLine();
-		System.out.println("Press A to accept or D to deny, press 0 to exit");
-		String option = br.readLine();
-
-		switch (option) {
-		case "A":
-			System.out.println("Offer has been Accepted");
-			break;
-		case "B":
-			System.out.println("Offer has been denied");
-			break;
-		default:
-			System.exit(0);
-		}
+//	private static void acceptDeny() throws Exception {
+//		viewOffer();
+//		System.out.println("Please select offer to accept or deny");
+//		String carId = br.readLine();
+//		System.out.println("Press A to accept or D to deny, press 0 to exit");
+//		String option = br.readLine();
+//
+//		switch (option) {
+//		case "A":
+//			System.out.println("Offer has been Accepted");
+//			break;
+//		case "B":
+//			System.out.println("Offer has been denied");
+//			break;
+//		default:
+//			System.exit(0);
+//		}
 
 	}
-}
