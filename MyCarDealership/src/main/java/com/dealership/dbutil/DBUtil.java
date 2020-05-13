@@ -12,8 +12,8 @@ public class DBUtil {
 	{
 		String JDBC_URL = "jdbc:oracle:thin:@java2004raul.cancjc6pfcwp.us-east-2.rds.amazonaws.com:1521:ORCL";
 		Connection conn = null;
-		String user = "username"; //Update before running
-		String password = "password";//update before running
+		String user = "ralocorvette"; //Update before running
+		String password = "Papuchi2013";//update before running
 		try {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver");

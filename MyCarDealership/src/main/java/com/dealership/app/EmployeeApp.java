@@ -1,10 +1,9 @@
 package com.dealership.app;
-
+import com.dealership.dao.CarDAO;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import com.dealership.dao.CarDAO;
 import com.dealership.pojo.Car;
 
 
@@ -16,12 +15,12 @@ import com.dealership.pojo.Car;
 
 public class EmployeeApp {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static CarDAO dao = new CarDAO();
+	 static CarDAO dao = new CarDAO();
 
 
 	public static void employeeMenu() throws Exception{
 		String option = "";
-		do {
+		if(option !="H") {
 			System.out.println("A. View Cars");
 			System.out.println("B. Add Car");
 			System.out.println("C. Update Car");
@@ -54,8 +53,8 @@ public class EmployeeApp {
 			case "F":
 				viewPayments();
 				break;
-			case "G:":
-				acceptDeny();
+			case "G":
+				OfferApp.offerMenu();
 			break;
 			case "H":
 				System.out.println("*********************THANK YOU**************************");
@@ -65,15 +64,12 @@ public class EmployeeApp {
 				System.out.println("Invalid Option!!.Please enter again");
 				break;
 			}
-		} while (option != "F");
+		}
 	}
 
-	private static void acceptDeny() {
-	// TODO Auto-generated method stub
-	
-}
 
-	private static void viewPayments() {
+
+	private static void viewPayments() throws Exception {
 
 		CustomerApp.viewPayments();
 }
@@ -98,6 +94,10 @@ public class EmployeeApp {
 		System.out.println("------------------------------------");
 		String model = br.readLine();
 		System.out.println("------------------------------------");
+		System.out.println("Enter Owned: True/False:");
+		System.out.println("------------------------------------");
+		String owned = br.readLine();
+		System.out.println("------------------------------------");
 		System.out.println("Enter Product Price:");
 		System.out.println("------------------------------------");
 		int price = Integer.parseInt(br.readLine());
@@ -106,7 +106,7 @@ public class EmployeeApp {
 		System.out.println("------------------------------------");
 		int id = Integer.parseInt(br.readLine());
 		
-		Car car = new Car(brand, model, price,id);
+		Car car = new Car(brand, model,owned, price,id);
 		int status = dao.addCar(car);
 		if (status == 1) {
 			System.out.println("Car added successfully");
@@ -126,6 +126,10 @@ public class EmployeeApp {
 		System.out.println("------------------------------------");
 		String model = br.readLine();
 		System.out.println("------------------------------------");
+		System.out.println("Enter Owned: True/False:");
+		System.out.println("------------------------------------");
+		String owned = br.readLine();
+		System.out.println("------------------------------------");
 		System.out.println("Enter Product Price:");
 		System.out.println("------------------------------------");
 		int price = Integer.parseInt(br.readLine());
@@ -134,7 +138,7 @@ public class EmployeeApp {
 		System.out.println("------------------------------------");
 		int id = Integer.parseInt(br.readLine());
 		
-		Car car = new Car (brand, model, price,id);
+		Car car = new Car (brand, model,owned, price,id);
 		int status = dao.updateCar(car);
 		if (status == 1) {
 			System.out.println("Car updated successfully");
@@ -143,6 +147,7 @@ public class EmployeeApp {
 		}
 		System.out.println("\n");
 	}
+
 
 	public static void deleteCar() throws Exception {
 		System.out.println("------------------------------------");
@@ -166,12 +171,30 @@ public class EmployeeApp {
 		Car car = dao.getCarById(carId);
 		displayCar(car);
 		System.out.println("\n");
+		
+		System.out.println("Please select the desired payment agreement");
+		System.out.println("A. 36 Months");
+		System.out.println("B. 72 Months");
+		String option = br.readLine();
+		;
+		switch(option) {
+		case "A":
+			System.out.println("36 months:"+ car.getPrice()/36 );
+			break;
+		case "B":
+			System.out.println("72 months"+ car.getPrice()/72);
+		break;
+		default:
+			System.out.println("Invalid selection. Please try again!");
+		}
+		
 	}
 
 	public static void displayCar(Car car) {
 		System.out.println("Car Brand: " + car.getBrand());
 		System.out.println("Car Model: " + car.getModel());
 		System.out.println("Car Price: " + car.getPrice());
+		System.out.println("Ownership state: "+car.getOwned());
 		System.out.println("\n");
 	}
 }

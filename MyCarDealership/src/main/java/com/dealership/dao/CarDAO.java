@@ -26,7 +26,7 @@ public class CarDAO {
 			
 			ResultSet rs = st.executeQuery("SELECT * FROM cars");
 			while (rs.next()) {
-				Car car = new Car(rs.getString("brand"), rs.getString("model"),
+				Car car = new Car(rs.getString("brand"), rs.getString("model"), rs.getString("owned"),
 						rs.getInt("price"),rs.getInt("id"));
 				carList.add(car);
 			}
@@ -47,7 +47,8 @@ public class CarDAO {
 			ps.setString(1, brand); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				car = new Car(rs.getString("brand"), rs.getString("model"), rs.getInt("price"),rs.getInt("id"));
+				car =  new Car(rs.getString("brand"), rs.getString("model"), rs.getString("owned"),
+						rs.getInt("price"),rs.getInt("id"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,10 +60,12 @@ public class CarDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO product VALUES(?,?,?)");
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO cars VALUES(?,?,?,?,?)");
 			ps.setString(1, car.getBrand()) ;
 			ps.setString(2, car.getModel());
-			ps.setInt(3, car.getPrice());
+			ps.setString(3, car.getOwned());
+			ps.setInt(4, car.getPrice());
+			ps.setInt(5, car.getId());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,10 +77,12 @@ public class CarDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE car SET brand=?,model=?,price=? WHERE id=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE cars SET brand=?,model=?,owned=?,price=? WHERE id=?");
 			ps.setString(1, car.getBrand());
 			ps.setString(2, car.getModel());
-			ps.setInt(3, car.getPrice());
+			ps.setString(3, car.getOwned());
+			ps.setInt(4, car.getPrice());
+			ps.setInt(5, car.getId());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,11 +90,12 @@ public class CarDAO {
 		return status;
 	}
 
+
 	public int deleteCar(String id) {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM car where id = ?");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM cars where id = ?");
 			ps.setString(1, id);
 			status = ps.executeUpdate();
 		} catch (Exception e) {
@@ -104,11 +110,12 @@ public class CarDAO {
 		Car car = null;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM car WHERE id = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM cars WHERE id = ?");
 			ps.setString(1, carId); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				car = new Car(rs.getString("brand"), rs.getString("model"), rs.getInt("price"),rs.getInt("id"));
+				car = new Car(rs.getString("brand"), rs.getString("model"), rs.getString("owned"),
+						rs.getInt("price"),rs.getInt("id"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

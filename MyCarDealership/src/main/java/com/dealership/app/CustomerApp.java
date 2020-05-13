@@ -1,21 +1,19 @@
 package com.dealership.app;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import com.dealership.dao.CarDAO;
 import com.dealership.dao.CustomerCarDAO;
 import com.dealership.dao.CustomerDAO;
-import com.dealership.pojo.Car;
+import com.dealership.driver.MainMenu;
+import com.dealership.pojo.Customer;
 import com.dealership.pojo.CustomerCar;
-import com.dealership.pojo.Offer;
 
-public class CustomerApp {
+public class CustomerApp{
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	//static CarDAO dao = new CarDAO();
-	//static CustomerDAO dao2 = new CustomerDAO();
-	static CustomerCarDAO dao3 = new CustomerCarDAO();
+	static CustomerDAO dao2 = new CustomerDAO();
+	//static CustomerCarDAO dao3 = new CustomerCarDAO();
 
 	public static void customerMenu() throws Exception{
 		String option = "";
@@ -27,6 +25,7 @@ public class CustomerApp {
 			//System.out.println("D. View remaining payments");
 			System.out.println("C.Login to account");
 			System.out.println("E. Exit");
+			System.out.println("Z Go Back to Home Menu");
 			System.out.println("==========================================================================");
 			System.out.println("Enter an option");
 			System.out.println("==========================================================================");
@@ -43,6 +42,10 @@ public class CustomerApp {
 			case "C":
 				logintoAccount();
 				//makeOffer(); //move this to subsequent menun login
+				break;
+			case "Z":
+				System.out.println("Going back to Main Menu");
+				MainMenu.mainMenu();
 				break;
 			case "D":
 			viewPayments();
@@ -66,10 +69,11 @@ public class CustomerApp {
 		if(username.equals(username)&& password.equals(password)) {
 			
 			String option = "";
-			System.out.println("You are logged in now you can do more stuff :-)");
+			System.out.println("You are logged in");
 			System.out.println("A. View all Cars in the Dealership");
 			System.out.println("B. Make Offer");
 			System.out.println("C. View Payments on my own Car");
+			System.out.println("Z. Back to Home Menu");
 			System.out.println("D. Exit");
 			option = br.readLine();
 			System.out.println("\n");
@@ -84,14 +88,20 @@ public class CustomerApp {
 			case "C":
 			viewPayments();
 			case "D":
-				System.out.println("*********************THANK YOU**************************");
+				System.out.println("Thanks for visiting the dealership!");
 				System.exit(0);
+				break;
+			case "Z":
+				System.out.println("Going back to Main Menu");
+				MainMenu.mainMenu();
 				break;
 			default:
 				System.out.println("Invalid Option!!.Please enter again");
 				break;
 			}
 		} while (option != "D");
+		}else {
+			CustomerApp.customerMenu();
 		}
 }
 	
@@ -101,41 +111,48 @@ public class CustomerApp {
 		System.out.println("------------------------------------");
 		System.out.println("Enter First Name:");
 		System.out.println("------------------------------------");
+		String name = br.readLine();
 		System.out.println("------------------------------------");
 		System.out.println("Enter Last Name:");
 		System.out.println("------------------------------------");
+		String lastname =br.readLine();
+		System.out.println("------------------------------------");
+		System.out.println("Enter last 4 of SSN:");
+		System.out.println("------------------------------------");
+		String lastFourSsnID = br.readLine();
 		System.out.println("------------------------------------");
 		System.out.println("Enter Username:");
 		System.out.println("------------------------------------");
+		String username = br.readLine();
 		System.out.println("------------------------------------");
 		System.out.println("Enter Password:");
 		System.out.println("------------------------------------");
+		String password = br.readLine();
 		System.out.println("------------------------------------");
 		System.out.println("Enter Brand Name:");
 		System.out.println("------------------------------------");
-		String brand = br.readLine();
+		String custCarBrand = br.readLine();
 		System.out.println("------------------------------------");
 		System.out.println("Enter Model Name:");
 		System.out.println("------------------------------------");
-		String model = br.readLine();
+		String custCarModel = br.readLine();
 		System.out.println("------------------------------------");
-		System.out.println("Enter Car Price:");
+		System.out.println("Enter Car Value:");
 		System.out.println("------------------------------------");
-		int price = Integer.parseInt(br.readLine());
-		System.out.println("------------------------------------");
-		System.out.println("Enter Car ID:");
-		System.out.println("------------------------------------");
-		int id = Integer.parseInt(br.readLine());
+		int custCarValue = Integer.parseInt(br.readLine());
 		System.out.println("------------------------------------");
 		System.out.println("Enter remaining Payments:");
 		System.out.println("------------------------------------");
-		int remPayments = Integer.parseInt(br.readLine());
+		int custRemainingPayments = Integer.parseInt(br.readLine());
 		System.out.println("------------------------------------");
-		System.out.println("Enter monthly Payments:");
+		System.out.println("Enter current monthly payment Value:");
 		System.out.println("------------------------------------");
 		int monPayment = Integer.parseInt(br.readLine());
-		CustomerCar cCar = new CustomerCar(brand, model, price,id,remPayments,monPayment);
-		int status = dao3.addCustomerCar(cCar);
+
+		//CustomerCar cCar = new CustomerCar(brand, model, price,id,remPayments,monPayment);
+		Customer customer = new Customer(name,lastname,lastFourSsnID,username,password,custCarBrand,
+				custCarModel,custCarValue,custRemainingPayments,monPayment);
+		int status = dao2.addCustomer(customer);
 		if (status == 1) {
 			System.out.println("Car added successfully");
 		} else {
@@ -150,21 +167,24 @@ public class CustomerApp {
 		
 	}
 
-	public static void viewPayments() {
+	public static void viewPayments() throws Exception{
 		System.out.println("------------------------------------");
-		List<CustomerCar> customerCarList = dao3.getAllCars();
-		for (CustomerCar cCar : customerCarList) {
-			displayCustomerCar(cCar);
+		List<Customer> customerList = dao2.getAllCustomers();
+		for (Customer customer : customerList) {
+			displayCustomer(customer);
 		}
 		System.out.println("------------------------------------");
 		System.out.println("\n");
+		
+		CustomerApp.customerMenu();
 	}
-	public static void displayCustomerCar(CustomerCar cCar) {
-		System.out.println("Car Brand: " + cCar.getBrand());
-		System.out.println("Car Model: " + cCar.getModel());
-		System.out.println("Car Price: " + cCar.getPrice());
-		System.out.println("Car Remaining Payments "+ cCar.getRemPayments());
-		System.out.println("Car Monthly Payment "+cCar.getMonPayment());
+	public static void displayCustomer(Customer customer) {
+		System.out.println("Customer Name: "+ customer.getName()+" "+customer.getLastname());
+		System.out.println("Car Brand: " + customer.getCustCarBrand());
+		System.out.println("Car Model: " + customer.getCustCarModel());
+		System.out.println("Car Price: " + customer.getCustCarValue());
+		System.out.println("Car Remaining Payments "+ customer.getCustRemainingPayments());
+		System.out.println("Car Monthly Payment "+customer.getMonPayment());
 		System.out.println("\n");
 	}
 }

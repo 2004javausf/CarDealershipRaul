@@ -9,7 +9,8 @@ import java.util.List;
 
 import com.dealership.dbutil.DBUtil;
 import com.dealership.pojo.CustomerCar;
-
+//int n3 = st.executeUpdate("CREATE TABLE customercars(customerbrand varchar(20),"
+		//+ "customermodel varchar(20),customerpriceprice int, customerid int, remPayments int, monPayment int)");
 public class CustomerCarDAO {
 	public List<CustomerCar> getAllCars() {
 		//create array list
@@ -24,8 +25,8 @@ public class CustomerCarDAO {
 			
 			ResultSet rs = st.executeQuery("SELECT * FROM customercars");
 			while (rs.next()) {
-				CustomerCar cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"),
-						rs.getInt("price"),rs.getInt("id"),rs.getInt("remPayments"),rs.getInt("monPayment"));
+				CustomerCar cCar = new CustomerCar(rs.getString("customerbrand"), rs.getString("customermodel"),
+						rs.getInt("customerprice"),rs.getInt("customerid"),rs.getInt("remPayments"),rs.getInt("monPayment"));
 				customerCarList.add(cCar);
 			}
 			//close connection 
@@ -41,12 +42,12 @@ public class CustomerCarDAO {
 		CustomerCar cCar = null;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM customercar WHERE brand = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM customercars WHERE brand = ?");
 			ps.setString(1, brand); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"),
-						rs.getInt("price"),rs.getInt("id"),rs.getInt("remPayments"),rs.getInt("monPayment"));
+				cCar = new CustomerCar(rs.getString("customerbrand"), rs.getString("customermodel"),
+						rs.getInt("customerprice"),rs.getInt("customerid"),rs.getInt("remPayments"),rs.getInt("monPayment"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,7 +77,8 @@ public class CustomerCarDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE customercar SET brand=?,model=?,price=?,remPayments=?,monPayments=? WHERE id=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE customercar SET customerbrand=?,customermodel=?,"
+					+ "customerprice=?,remPayments=?,monPayments=? WHERE customerid=?");
 			ps.setString(1, cCar.getBrand());
 			ps.setString(2, cCar.getModel());
 			ps.setInt(3, cCar.getPrice());
@@ -94,7 +96,7 @@ public class CustomerCarDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM customercar where id = ?");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM customercars where customerid = ?");
 			ps.setString(1, id);
 			status = ps.executeUpdate();
 		} catch (Exception e) {
@@ -109,12 +111,12 @@ public class CustomerCarDAO {
 		CustomerCar cCar = null;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM customercar WHERE id = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM customercars WHERE customerid = ?");
 			ps.setString(1, carId); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				cCar = new CustomerCar(rs.getString("brand"), rs.getString("model"),
-						rs.getInt("price"),rs.getInt("id"),rs.getInt("remPayments"),rs.getInt("monPayment"));
+				cCar = new CustomerCar(rs.getString("customerbrand"), rs.getString("customermodel"),
+						rs.getInt("customerprice"),rs.getInt("customerid"),rs.getInt("remPayments"),rs.getInt("monPayment"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

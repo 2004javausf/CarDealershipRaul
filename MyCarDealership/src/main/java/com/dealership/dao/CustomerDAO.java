@@ -20,14 +20,14 @@ public class CustomerDAO {
 			//create statement
 			Statement st = conn.createStatement();
 			//create ResultSet Object and execute the SQL Query
-																	 
+						 
 			
 			ResultSet rs = st.executeQuery("SELECT * FROM customer");
 			while (rs.next()) {
 				Customer customer = new Customer(rs.getString("name"), rs.getString("lastname"),
-						rs.getString("username"),rs.getString("password"),rs.getString("custCarBrand"),
-						rs.getString("custCarModel"),rs.getInt("custCarValue"),rs.getInt("custRemainingPayments"),
-						rs.getInt("lastFourSsnID"));
+						rs.getString("lastFourSsnID"),rs.getString("username"),rs.getString("password"),
+						rs.getString("custCarBrand"),rs.getString("custCarModel"),rs.getInt("custCarValue"),rs.getInt("custRemainingPayments"),
+						rs.getInt("monPayment"));
 				customerList.add(customer);
 			}
 			//close connection 
@@ -43,14 +43,14 @@ public class CustomerDAO {
 		Customer customer = null;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM product WHERE name = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM customer WHERE name = ?");
 			ps.setString(1, name); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				customer  = new Customer(rs.getString("name"), rs.getString("lastname"),
-						rs.getString("username"),rs.getString("password"),rs.getString("custCarBrand"),
-						rs.getString("custCarModel"),rs.getInt("custCarValue"),rs.getInt("custRemainingPayments"),
-						rs.getInt("lastFourSsnID"));
+				customer  =new Customer(rs.getString("name"), rs.getString("lastname"),
+						rs.getString("lastFourSsnID"),rs.getString("username"),rs.getString("password"),
+						rs.getString("custCarBrand"),rs.getString("custCarModel"),rs.getInt("custCarValue"),rs.getInt("custRemainingPayments"),
+						rs.getInt("monPayment"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,16 +62,17 @@ public class CustomerDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?)");
-			ps.setString(1, customer.getUsername()) ;
-			ps.setString(2, customer.getPassword());
-			ps.setString(3, customer.getFirstName());
-			ps.setString(4, customer.getLastName());
-			ps.setString(5, customer.getCustCarBrand());
-			ps.setString(6, customer.getCustCarModel());
-			ps.setInt(7, customer.getCustCarValue());
-			ps.setInt(8, customer.getCustRemainingPayments());
-			ps.setInt(9, customer.getLastFourSSNId());
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?,?,?,?,?,?)");
+			ps.setString(1, customer.getName()) ;
+			ps.setString(2, customer.getLastname());
+			ps.setString(3, customer.getLastFourSsnID());
+			ps.setString(4, customer.getUsername());
+			ps.setString(5, customer.getPassword());
+			ps.setString(6, customer.getCustCarBrand());
+			ps.setString(7, customer.getCustCarModel());
+			ps.setInt(8, customer.getCustCarValue());
+			ps.setInt(9, customer.getCustRemainingPayments());
+			ps.setInt(10, customer.getMonPayment());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,18 +84,15 @@ public class CustomerDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE customer SET username=?,password=?,"
-					+ "firstName=?,lastName=?,"
+			PreparedStatement ps = conn.prepareStatement("UPDATE customer SET "
 					+ "custCarBrand=?,custCarModel=?,"
-					+ "custCarValue=?,custRemainingPayments=? WHERE lastFourSsnID=?");
-			ps.setString(1, customer.getUsername());
-			ps.setString(2, customer.getPassword());
-			ps.setString(3, customer.getFirstName());
-			ps.setString(4,customer.getLastName());
-			ps.setString(4, customer.getCustCarBrand());
-			ps.setString(5, customer.getCustCarModel());
-			ps.setInt(6,customer.getCustCarValue());
-			ps.setInt(7, customer.getCustRemainingPayments());
+					+ "custCarValue=?,custRemainingPayments=?,monPayment=?, WHERE lastFourSsnID=?");
+	
+			ps.setString(1, customer.getCustCarBrand());
+			ps.setString(2, customer.getCustCarModel());
+			ps.setInt(3,customer.getCustCarValue());
+			ps.setInt(4, customer.getCustRemainingPayments());
+			ps.setInt(5, customer.getMonPayment());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,14 +119,14 @@ public class CustomerDAO {
 		Customer customer = null;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM product WHERE lastFourSsnID = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM customer WHERE lastFourSsnID = ?");
 			ps.setString(1, lastFourSsnID); 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				customer = new Customer(rs.getString("name"), rs.getString("lastname"),
-						rs.getString("username"),rs.getString("password"),rs.getString("custCarBrand"),
-						rs.getString("custCarModel"),rs.getInt("custCarValue"),rs.getInt("custRemainingPayments"),
-						rs.getInt("lastFourSsnID"));
+						rs.getString("lastFourSsnID"),rs.getString("username"),rs.getString("password"),
+						rs.getString("custCarBrand"),rs.getString("custCarModel"),rs.getInt("custCarValue"),rs.getInt("custRemainingPayments"),
+						rs.getInt("monPayment"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

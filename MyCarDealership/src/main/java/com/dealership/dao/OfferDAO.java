@@ -59,9 +59,9 @@ public class OfferDAO {
 			Connection conn = DBUtil.getConnection();
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO offer VALUES(?,?,?,?)");
 			ps.setString(1, offer.getPrice()) ;
-			ps.setString(2, offer.getPayement());
-			ps.setInt(3, offer.getCarId());
-			ps.setString(4, offer.getAcceptedDenied());
+			ps.setString(2, offer.getPayment());
+			ps.setString(3, offer.getAcceptedDenied());
+			ps.setInt(4, offer.getCarId());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,10 +73,11 @@ public class OfferDAO {
 		int status = 0;
 		try {
 			Connection conn = DBUtil.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE offer SET price=?,payement=?,acceptedDenied=? WHERE carId=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE offer SET price=?,payment=?,acceptedDenied=? WHERE carId=?");
 			ps.setString(1, offer.getPrice());
-			ps.setString(2, offer.getPayement());
-			ps.setInt(3, offer.getCarId());
+			ps.setString(2, offer.getPayment());
+			ps.setString(3, offer.getAcceptedDenied());
+			ps.setInt(4, offer.getCarId());
 			status = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import com.dealership.dao.OfferDAO;
+import com.dealership.driver.MainMenu;
 import com.dealership.pojo.Offer;
 
 public class OfferApp {
@@ -19,7 +20,7 @@ public class OfferApp {
 			System.out.println("C. Accept or Deny Offer (Update Offer)");
 			System.out.println("D. Delete Offer");
 			System.out.println("E. Search Offer");
-			System.out.println("F. Accept/Deny Offers");
+			System.out.println("F. Back to Main Menu");
 			System.out.println("G. Exit");
 			System.out.println("==========================================================================");
 			System.out.println("Enter an option");
@@ -44,6 +45,9 @@ public class OfferApp {
 				searchOffer();
 				break;
 			case "F":
+				MainMenu.mainMenu();
+			case "G":
+			
 				System.out.println("Thanks for visiting. Good Bye!");
 				System.exit(0);
 				break;
@@ -51,7 +55,7 @@ public class OfferApp {
 				System.out.println("Invalid Option!!Please try again");
 				break;
 			}
-		} while (option != "F");
+		} while (option != "G");
 	}
 
 	public static void viewOffer() {
@@ -66,13 +70,13 @@ public class OfferApp {
 
 	private static void displayOffer(Offer offer) {
 		System.out.println("Offer Price: " + offer.getPrice());
-		System.out.println("Offer Payment: " + offer.getPayement());
+		System.out.println("Offer Payment: " + offer.getPayment());
 		System.out.println("Car ID: " + offer.getCarId());
 		System.out.println("\n");
 
 	}
 
-	private static void updateOffer() throws Exception {
+	public static void updateOffer() throws Exception {
 		System.out.println("------------------------------------");
 		System.out.println("Enter Offer Price:");
 		System.out.println("------------------------------------");
@@ -117,6 +121,7 @@ public static void addOffer()throws Exception{
 	int status = dao.addOffer(offer);
 	if (status == 1) {
 		System.out.println("Offer added successfully");
+		CustomerApp.customerMenu();
 	} else {
 		System.out.println("ERROR while adding offer");
 	}
